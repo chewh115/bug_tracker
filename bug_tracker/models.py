@@ -1,3 +1,37 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.utils import timezone
 
 # Create your models here.
+
+class MyUser(AbstractUser):
+    display_name = models.CharField(max_length=50, null=True, blank=True)
+
+
+class WorkTicket():
+    STATUS_CHOICES = [
+        ('New', 'New'),
+        ('In Progress', 'In Progress'),
+        ('Done', 'Done'),
+        ('Invalid', 'Invalid')
+    ]
+    title = models.CharField(max_length=100)
+    time_filed = models.DateTimeField(default=timezone.now)
+    time_completed = models.DateTimeField(null=True, blank=True)
+    description = models.TextField()
+    creator = models.ForeignKey(MyUser, on_delete=models.SET('User has been deleted'))
+    status = models.CharField(max_length=11, choices=STATUS_CHOICES, default='New')
+    assigned_to = models.ForeignKey(MyUser, on_delete=models.SET('User has been deleted'))
+    completed_by = models.ForeignKey(MyUser, on_delete=models.SET('User has been deleted'))
+
+    def __str__(self):
+        return self.title
+
+
+# Title
+# Time / Date filed
+# Description
+# Name of user who filed ticket
+# Status of ticket (New / In Progress / Done / Invalid) --> hint: https://docs.djangoproject.com/en/3.0/ref/models/fields/#choices (Links to an external site.)Links to an external site.
+# Name of user assigned to ticket
+# Name of user who completed the ticket
