@@ -17,7 +17,6 @@ class WorkTicket():
     ]
     title = models.CharField(max_length=100)
     time_filed = models.DateTimeField(default=timezone.now)
-    time_completed = models.DateTimeField(null=True, blank=True)
     description = models.TextField()
     creator = models.ForeignKey(MyUser, on_delete=models.SET('User has been deleted'))
     status = models.CharField(max_length=11, choices=STATUS_CHOICES, default='New')
@@ -26,12 +25,3 @@ class WorkTicket():
 
     def __str__(self):
         return self.title
-
-
-# Title
-# Time / Date filed
-# Description
-# Name of user who filed ticket
-# Status of ticket (New / In Progress / Done / Invalid) --> hint: https://docs.djangoproject.com/en/3.0/ref/models/fields/#choices (Links to an external site.)Links to an external site.
-# Name of user assigned to ticket
-# Name of user who completed the ticket
