@@ -17,16 +17,44 @@
 
 <h3>New Tickets</h3>
 {% for ticket in tickets %} {% if ticket.status == 'New' %}
-<h5><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ticket.title}}</a></h5>
+<h5>
+  <a href="{% url 'ticket_detail' pk=ticket.pk %}"
+    >{{ticket.id}} - {{ticket.title}}</a
+  >
+</h5>
 <p>{{ticket.description}}</p>
+<p>
+  Submitted by:
+  <a href="{% url 'user_detail' id=ticket.creator_id %}">{{ticket.creator}}</a>
+</p>
 {% endif %} {% endfor %}
 <h3>In Progress</h3>
 {% for ticket in tickets %} {% if ticket.status == 'In Progress' %}
-<h5><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ticket.title}}</a></h5>
+<h5>
+  <a href="{% url 'ticket_detail' pk=ticket.pk %}"
+    >{{ticket.id}} - {{ticket.title}}</a
+  >
+</h5>
 <p>{{ticket.description}}</p>
+<p>
+  <a href="{% url 'user_detail' id=ticket.assigned_to_id %}"
+    >{{ticket.assigned_to}}</a
+  >
+  is working on this ticket.
+</p>
 {% endif %} {% endfor %}
 <h3>Completed</h3>
 {% for ticket in tickets %} {% if ticket.status == 'Done' %}
-<h5><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ticket.title}}</a></h5>
+<h5>
+  <a href="{% url 'ticket_detail' pk=ticket.pk %}"
+    >{{ticket.id}} - {{ticket.title}}</a
+  >
+</h5>
 <p>{{ticket.description}}</p>
+<p>
+  <a href="{% url 'user_detail' id=ticket.completed_by_id %}"
+    >{{ticket.completed_by}}</a
+  >
+  has completed this ticket.
+</p>
 {% endif %}{% endfor %}

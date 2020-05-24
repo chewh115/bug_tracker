@@ -2,7 +2,7 @@ from django.shortcuts import render, reverse, HttpResponseRedirect, redirect
 from django.contrib.auth import login, logout, authenticate
 from datetime import datetime
 from .forms import TicketForm, LoginForm, StatusForm
-from .models import WorkTicket
+from .models import MyUser, WorkTicket
 
 # Create your views here.
 def index(request):
@@ -72,6 +72,20 @@ def invalid(request, pk):
     ticket.status = 'Invalid'
     ticket.save()
     return HttpResponseRedirect(reverse('home'))
+
+
+def user_detail(request, id):
+    info = {}
+    user = MyUser.objects.get(id=id)
+    submitted = WorkTicket.objects.filter(creator_id = id)
+    assigned = WorkTicket.objects.filter(assigned_to_id = id)
+    completed = WorkTicket.objects.filter(completed_by_id = id)
+    info['user'] = user
+    info['submitted'] = submitted
+    info['assigned'] = assigned
+    info['completed'] = completed
+    return render(request, 'user_detail.html', info)
+    
 
 def logout_view(reqest):
     logout(reqest)
