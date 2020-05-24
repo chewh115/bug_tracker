@@ -1,20 +1,28 @@
 <!-- has a ticket detail page
-allows assigning a ticket to the currently logged in user
 allows marking a ticket as invalid
-allows marking a ticket as complete
 allows editing tickets (we will limit this to Title and Description,
 do not include other any of the other fields) -->
+<heading>
+  <a href="{% url 'home' %}">Home</a>
+  <a href="{% url 'invalid' pk=ticket.pk%}">This Ticket Is Invalid</a>
+</heading>
 <h1>{{ticket.title}}</h1>
 <p>Ticket status: {{ticket.status}}</p>
 <p>Created by: {{ticket.creator}}</p>
 <p>{{ticket.description}}</p>
-{% if not ticket.assigned_to%}
+<p>Ticket created at {{ticket.time_filed}}</p>
+{% if not ticket.assigned_to and ticket.status != 'Invalid' %}
 <p><a href="{% url 'assign_to' pk=ticket.pk%}">Assign to self</a></p>
+{% elif ticket.status == 'Invalid' %}
+<p>This ticket is invalid, you cannot work on it.</p>
 {% else %}
-<p>{{ticket.assigned_to}}</p>
+<p>{{ticket.assigned_to}} is working on this ticket</p>
+{% endif %} {% if not ticket.completed_by and ticket.status != 'Invalid' %}
+<p>
+  <a href="{% url 'completed_by' pk=ticket.pk%}">Mark ticket as complete</a>
+</p>
+{% elif ticket.status == 'Invalid' %}
+<p>This ticket is invalid, you cannot work on it.</p>
+{% else %}
+<p>{{ticket.completed_by}} finished this ticket.</p>
 {% endif %}
-<h3>Update the status:</h3>
-<form action="" , method="POST">
-  {% csrf_token %} {{ form.as_p }}
-  <input type="submit" value="Update Status" />
-</form>

@@ -36,7 +36,7 @@ def new_ticket(request):
             new_ticket_info = form.cleaned_data
             WorkTicket.objects.create(
                 title = new_ticket_info['title'],
-                time_filed = datetime.utcnow(),
+                time_filed = datetime.now(),
                 description = new_ticket_info['description'],
                 creator = request.user,
                 status = 'New',
@@ -48,24 +48,30 @@ def new_ticket(request):
 
 def ticket_detail(request, pk):
     ticket = WorkTicket.objects.get(pk=pk)
-    if request.method == "POST":
-        form = StatusForm(request.POST)
-        if form.is_valid():
-            new_status = form.cleaned_data.get('status_change')
-            ticket.status = new_status
-            ticket.save()
-            return HttpResponseRedirect(reverse('home'))
-    form = StatusForm()
-    return render(request, 'ticket_detail.html', {'form': form, 'ticket': ticket})
+    return render(request, 'ticket_detail.html', {'ticket': ticket})
 
 
 def assign_to(request, pk):
     ticket = WorkTicket.objects.get(pk=pk)
-    ticket.assign_to = request.user
+    ticket.assigned_to = request.user
     ticket.status = 'In Progress'
     ticket.save()
     return HttpResponseRedirect(reverse('home'))
 
+
+def completed_by(request, pk):
+    ticket = WorkTicket.objects.get(pk=pk)
+    ticket.completed_by = request.user
+    ticket.status = 'Done'
+    ticket.save()
+    return HttpResponseRedirect(reverse('home'))
+
+
+def invalid(request, pk):
+    ticket = WorkTicket.objects.get(pk=pk)
+    ticket.status = 'Invalid'
+    ticket.save()
+    return HttpResponseRedirect(reverse('home'))
 
 def logout_view(reqest):
     logout(reqest)
