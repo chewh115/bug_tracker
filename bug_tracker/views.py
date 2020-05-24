@@ -1,7 +1,7 @@
 from django.shortcuts import render, reverse, HttpResponseRedirect, redirect
 from django.contrib.auth import login, logout, authenticate
 from datetime import datetime
-from .forms import TicketForm, LoginForm
+from .forms import TicketForm, LoginForm, StatusForm
 from .models import WorkTicket
 
 # Create your views here.
@@ -44,3 +44,29 @@ def new_ticket(request):
             return HttpResponseRedirect(reverse('home'))
     form = TicketForm()
     return render(request, 'new_ticket.html', {'form': form})
+
+
+def ticket_detail(request, pk):
+    ticket = WorkTicket.objects.get(pk=pk)
+    if request.method == "POST":
+        form = StatusForm(request.POST)
+        if form.is_valid():
+            new_status = form.cleaned_data.get('status_change')
+            ticket.status = new_status
+            ticket.save()
+            return HttpResponseRedirect(reverse('home'))
+    form = StatusForm()
+    return render(request, 'ticket_detail.html', {'form': form, 'ticket': ticket})
+
+
+def assign_to(request, pk):
+    ticket = WorkTicket.objects.get(pk=pk)
+    ticket.assign_to = request.user
+    ticket.status = 'In Progress'
+    ticket.save()
+    return HttpResponseRedirect(reverse('home'))
+
+
+def logout_view(reqest):
+    logout(reqest)
+    return HttpResponseRedirect(reverse('home'))

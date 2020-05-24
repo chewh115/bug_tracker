@@ -4,9 +4,29 @@
     (i.e. New, In Progress, Done, Invalid)
     allows filing/creating tickets -> link to form
 -->
+<header>
+  <a href="{% url 'new_ticket' %}">Submit a new ticket</a>
+  <a href="{% url 'logout' %}">Logout</a>
+</header>
 <h1>Bug Tracking</h1>
-<a href="{% url 'new_ticket' %}">Submit a new ticket</a>
-{% for ticket in tickets %}
-<p>{{ticket.title}}</p>
+<h4>
+  Hello, {{request.user.username}}
+  <br />
+  We have some work to do!
+</h4>
+
+<h3>New Tickets</h3>
+{% for ticket in tickets %} {% if ticket.status == 'New' %}
+<h5><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ticket.title}}</a></h5>
 <p>{{ticket.description}}</p>
-{% endfor %}
+{% endif %} {% endfor %}
+<h3>In Progress</h3>
+{% for ticket in tickets %} {% if ticket.status == 'In Progress' %}
+<h5><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ticket.title}}</a></h5>
+<p>{{ticket.description}}</p>
+{% endif %} {% endfor %}
+<h3>Completed</h3>
+{% for ticket in tickets %} {% if ticket.status == 'Done' %}
+<h5><a href="{% url 'ticket_detail' pk=ticket.pk %}">{{ticket.title}}</a></h5>
+<p>{{ticket.description}}</p>
+{% endif %}{% endfor %}
