@@ -26,11 +26,15 @@ class WorkTicket(models.Model):
     status = models.CharField(max_length=11, choices=STATUS_CHOICES, default='New')
     assigned_to = models.ForeignKey(
         MyUser,
+        null=True,
+        blank=True,
         on_delete=models.SET('User has been deleted'),
         related_name='assigned_to'
         )
     completed_by = models.ForeignKey(
         MyUser,
+        null=True,
+        blank=True,
         on_delete=models.SET('User has been deleted'),
         related_name='completed_by'
         )
