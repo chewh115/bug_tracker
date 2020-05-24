@@ -4,4 +4,9 @@
     (i.e. New, In Progress, Done, Invalid)
     allows filing/creating tickets -> link to form
 -->
-<h1>Hello, World!</h1>
+<h1>Bug Tracking</h1>
+<a href="{% url 'new_ticket' %}">Submit a new ticket</a>
+{% for ticket in tickets %}
+<p>{{ticket.title}}</p>
+<p>{{ticket.description}}</p>
+{% endfor %}
