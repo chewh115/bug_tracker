@@ -8,7 +8,7 @@
 <h3>Tickets {{user.username}} is currently working on:</h3>
 {% for ticket in  assigned %}
 {% if not ticket.completed_by %}
-<a href="{% url 'ticket_detail' pk=ticket.pk %}"
+<a href="{% url 'ticket_detail' id=ticket.id %}"
 >{{ticket.id}} - {{ticket.title}}</a
 >
 </p>
@@ -18,7 +18,7 @@
 <h3>Tickets filed by {{user.username}}:</h3>
 {% for ticket in submitted %}
 <p>
-  <a href="{% url 'ticket_detail' pk=ticket.pk %}"
+  <a href="{% url 'ticket_detail' id=ticket.id %}"
     >{{ticket.id}} - {{ticket.title}}</a
   >
 </p>
@@ -27,7 +27,7 @@
 {% endfor %}
 <h3>Tickets {{user.username}} has completed:</h3>
 {% for ticket in completed %}
-<a href="{% url 'ticket_detail' pk=ticket.pk %}"
+<a href="{% url 'ticket_detail' id=ticket.id %}"
 >{{ticket.id}} - {{ticket.title}}</a
 >
 </p>

@@ -18,7 +18,7 @@
 <h3>New Tickets</h3>
 {% for ticket in tickets %} {% if ticket.status == 'New' %}
 <h5>
-  <a href="{% url 'ticket_detail' pk=ticket.pk %}"
+  <a href="{% url 'ticket_detail' id=ticket.id %}"
     >{{ticket.id}} - {{ticket.title}}</a
   >
 </h5>
@@ -31,7 +31,7 @@
 <h3>In Progress</h3>
 {% for ticket in tickets %} {% if ticket.status == 'In Progress' %}
 <h5>
-  <a href="{% url 'ticket_detail' pk=ticket.pk %}"
+  <a href="{% url 'ticket_detail' id=ticket.id %}"
     >{{ticket.id}} - {{ticket.title}}</a
   >
 </h5>
@@ -46,7 +46,7 @@
 <h3>Completed</h3>
 {% for ticket in tickets %} {% if ticket.status == 'Done' %}
 <h5>
-  <a href="{% url 'ticket_detail' pk=ticket.pk %}"
+  <a href="{% url 'ticket_detail' id=ticket.id %}"
     >{{ticket.id}} - {{ticket.title}}</a
   >
 </h5>

@@ -46,32 +46,32 @@ def new_ticket(request):
     return render(request, 'new_ticket.html', {'form': form})
 
 
-def ticket_detail(request, pk):
-    ticket = WorkTicket.objects.get(pk=pk)
+def ticket_detail(request, id):
+    ticket = WorkTicket.objects.get(id=id)
     return render(request, 'ticket_detail.html', {'ticket': ticket})
 
 
-def assign_to(request, pk):
-    ticket = WorkTicket.objects.get(pk=pk)
+def assign_to(request, id):
+    ticket = WorkTicket.objects.get(id=id)
     ticket.assigned_to = request.user
     ticket.status = 'In Progress'
     ticket.save()
-    return HttpResponseRedirect(reverse('home'))
+    return HttpResponseRedirect(reverse('ticket_detail.html', args=(id)))
 
 
-def completed_by(request, pk):
-    ticket = WorkTicket.objects.get(pk=pk)
+def completed_by(request, id):
+    ticket = WorkTicket.objects.get(id=id)
     ticket.completed_by = request.user
     ticket.status = 'Done'
     ticket.save()
-    return HttpResponseRedirect(reverse('home'))
+    return HttpResponseRedirect(reverse('ticket_detail.html', args=(id)))
 
 
-def invalid(request, pk):
-    ticket = WorkTicket.objects.get(pk=pk)
+def invalid(request, id):
+    ticket = WorkTicket.objects.get(id=id)
     ticket.status = 'Invalid'
     ticket.save()
-    return HttpResponseRedirect(reverse('home'))
+    return HttpResponseRedirect(reverse('ticket_detail.html', args=(id)))
 
 
 def user_detail(request, id):
@@ -85,7 +85,23 @@ def user_detail(request, id):
     info['assigned'] = assigned
     info['completed'] = completed
     return render(request, 'user_detail.html', info)
-    
+
+
+def ticket_edit(request, id):
+    ticket = WorkTicket.objects.get(id=id)
+    if request.method == 'POST':
+        form = TicketForm(request.POST)
+        if form.is_valid():
+            updated_ticket = form.cleaned_data
+            ticket.title = updated_ticket['title']
+            ticket.description = updated_ticket['description']
+            ticket.save()
+            return HttpResponseRedirect(reverse('ticket_detail.html', args=(id)))
+    form = TicketForm(initial = {
+        'title': ticket.title,
+        'description': ticket.description
+    })
+    return render(request, 'ticket_edit.html', form)
 
 def logout_view(reqest):
     logout(reqest)
