@@ -56,7 +56,7 @@ def assign_to(request, id):
     ticket.assigned_to = request.user
     ticket.status = 'In Progress'
     ticket.save()
-    return HttpResponseRedirect(reverse('ticket_detail.html', args=(id)))
+    return HttpResponseRedirect(reverse('ticket_detail', args=(id,)))
 
 
 def completed_by(request, id):
@@ -64,14 +64,14 @@ def completed_by(request, id):
     ticket.completed_by = request.user
     ticket.status = 'Done'
     ticket.save()
-    return HttpResponseRedirect(reverse('ticket_detail.html', args=(id)))
+    return HttpResponseRedirect(reverse('ticket_detail', args=(id,)))
 
 
 def invalid(request, id):
     ticket = WorkTicket.objects.get(id=id)
     ticket.status = 'Invalid'
     ticket.save()
-    return HttpResponseRedirect(reverse('ticket_detail.html', args=(id)))
+    return HttpResponseRedirect(reverse('ticket_detail', args=(id,)))
 
 
 def user_detail(request, id):
@@ -96,12 +96,12 @@ def ticket_edit(request, id):
             ticket.title = updated_ticket['title']
             ticket.description = updated_ticket['description']
             ticket.save()
-            return HttpResponseRedirect(reverse('ticket_detail.html', args=(id)))
+            return HttpResponseRedirect(reverse('ticket_detail', args=(id,)))
     form = TicketForm(initial = {
         'title': ticket.title,
         'description': ticket.description
     })
-    return render(request, 'ticket_edit.html', form)
+    return render(request, 'ticket_edit.html', {'form': form, 'ticket': ticket})
 
 def logout_view(reqest):
     logout(reqest)

@@ -10,6 +10,6 @@ urlpatterns = [
     path('completed-by/<int:id>/', views.completed_by, name='completed_by'),
     path('invalid/<int:id>/', views.invalid, name='invalid'),
     path('user-detail/<int:id>/', views.user_detail, name='user_detail'),
+    path('ticket-edit/<int:id>/', views.ticket_edit, name='ticket_edit'),
     path('logout/', views.logout_view, name='logout'),
-    # need path for ind. ticket
 ]
