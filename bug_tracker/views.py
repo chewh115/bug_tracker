@@ -103,6 +103,6 @@ def ticket_edit(request, id):
     })
     return render(request, 'ticket_edit.html', {'form': form, 'ticket': ticket})
 
-def logout_view(reqest):
-    logout(reqest)
+def logout_view(request):
+    logout(request)
     return HttpResponseRedirect(reverse('home'))
