@@ -58,3 +58,11 @@
   has completed this ticket.
 </p>
 {% endif %}{% endfor %}
+<h3>Invalid</h3>
+{% for ticket in tickets %} {% if ticket.status == 'Invalid'%}
+<h5>
+  <a href="{% url 'ticket_detail' id=ticket.id %}"
+    >{{ticket.id}} - {{ticket.title}}</a
+  >
+</h5>
+{%endif%}{%endfor%}
